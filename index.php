@@ -15,29 +15,33 @@
     <button type="button" onclick="window.location.href='public/restaurantes/cadastrar_pedido.php'">Cadastrar Pedido</button>
 
     <br>
-    <h2>Lista de Clientes</h2>
+    <h2>Lista de pedidos</h2>
 
     <table>
         <th>ID</th>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Telefone</th>
+        <th>Cliente</th>
+        <th>Restaurante</th>
+        <th>Valor</th>
+        <th>Status</th>
         <th>Ações</th>
         <?php
         include 'infra/conexao.php';
-        $sql = "SELECT * FROM clientes";
-        $clientes = $conn->query($sql);
-        while ($cliente = $clientes->fetch_assoc()) {
+        $sql = "SELECT * FROM pedidos p
+                JOIN clientes c ON p.id_cliente = c.id_cliente
+                JOIN restaurantes r ON p.restaurante_id = r.id_restaurante";
+        $pedidos = $conn->query($sql);
+        while ($pedido = $pedidos->fetch_assoc()) {
         ?>
 
             <tr>
-                <td><?php echo $cliente['id']; ?></td>
-                <td><?php echo $cliente['nome']; ?></td>
-                <td><?php echo $cliente['email']; ?></td>
-                <td><?php echo $cliente['telefone']; ?></td>
+                <td><?php echo $pedido['id_pedido']; ?></td>
+                <td><?php echo $pedido['nome']; ?></td>
+                <td><?php echo $pedido['nome']; ?></td>
+                <td><?php echo $pedido['valor']; ?></td>
+                <td><?php echo $pedido['status_pedido']; ?></td>
                 <td>
-                    <button type="button" onclick="window.location.href='public/clientes/edit_cliente.php?id=<?php echo $cliente['id']; ?>'">Editar</button>
-                    <button type="button" onclick="if (confirm('Tem certeza que deseja excluir este cliente?')) { window.location.href='public/clientes/delete_cliente.php?id=<?php echo $cliente['id']; ?>'; }">Excluir</button>
+                    <button type="button" onclick="window.location.href='public/pedidos/edit_pedido.php?id=<?php echo $pedido['id_pedido']; ?>'">Editar</button>
+                    <button type="button" onclick="if (confirm('Tem certeza que deseja excluir este pedido?')) { window.location.href='public/pedidos/delete_pedido.php?id=<?php echo $pedido['id_pedido']; ?>'; }">Excluir</button>
                 </td>
             </tr>
 
@@ -75,6 +79,37 @@
         <?php
         }
         ?>
+    </table>
+
+    <h2>Lista de Clientes</h2>
+    <table>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>Telefone</th>
+        <th>Ações</th>
+        <?php
+        $sql = "SELECT * FROM clientes";
+        $clientes = $conn->query($sql);
+        while ($cliente = $clientes->fetch_assoc()) {
+        ?>
+
+            <tr>
+                <td><?php echo $cliente['id_cliente']; ?></td>
+                <td><?php echo $cliente['nome']; ?></td>
+                <td><?php echo $cliente['email']; ?></td>
+                <td><?php echo $cliente['telefone']; ?></td>
+                <td>
+                    <button type="button" onclick="window.location.href='public/clientes/edit_cliente.php?id=<?php echo $cliente['id_cliente']; ?>'">Editar</button>
+                    <button type="button" onclick="if (confirm('Tem certeza que deseja excluir este cliente?')) { window.location.href='public/clientes/delete_cliente.php?id=<?php echo $cliente['id_cliente']; ?>'; }">Excluir</button>
+                </td>
+            </tr>
+
+        <?php
+        }
+        ?>
+    </table>
 
 </body>
 
